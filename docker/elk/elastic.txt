@@ -1,0 +1,16 @@
+# 1.first pull image from docker hub
+docker pull docker.elastic.coelasticsearchelasticsearch8.11.1
+docker pull elasticsearch:8.11.1
+
+# 2.create a custom network
+docker network create elastic
+
+# 3.config your jvm of your windows system or whatever os you have
+wsl -d docker-desktop
+sysctl -w vm.max_map_count=262144
+
+
+# 4.run elastic search separately , from kibana , because of known issue of not genrating tokens,
+# if you run them as a single docker-compose package
+docker run --name es01 --net elastic -p 9200:9200 -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+
