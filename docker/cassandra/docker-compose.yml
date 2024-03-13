@@ -8,6 +8,9 @@ services:
     hostname: cassandra1 
     networks: 
       - cassandra 
+      
+    volumes:
+      - ./data/cass1:/var/lib/cassandra
 
     ports: 
       - "9042:9042" 
@@ -27,6 +30,9 @@ services:
     container_name: cassandra2 
     hostname: cassandra2 
 
+    volumes:
+      - ./data/cass2:/var/lib/cassandra  
+
     networks: 
       - cassandra 
 
@@ -44,6 +50,9 @@ services:
     image: cassandra:latest 
     container_name: cassandra3 
     hostname: cassandra3 
+
+    volumes:
+      - ./data/cass3:/var/lib/cassandra  
 
     networks: 
       - cassandra 
