@@ -27,3 +27,16 @@ services:
     container_name: linux-node-exporter
     ports:
       - 9098:9100
+
+  alertmanager:
+    image: prom/alertmanager:v0.12.0
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    restart: always
+#    command:
+#      - '-config.file=/etc/alertmanager/config.yml'
+#      - '-storage.path=/alertmanager'
+    deploy:
+      mode: global
