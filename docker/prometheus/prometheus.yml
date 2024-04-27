@@ -6,6 +6,10 @@ global:
   - OpenMetricsText0.0.1
   - PrometheusText0.0.4
   evaluation_interval: 15s
+
+###
+### Alerting And Ruling Stuff
+###
 alerting:
   alertmanagers:
   - follow_redirects: true
@@ -14,7 +18,13 @@ alerting:
     timeout: 10s
     api_version: v2
     static_configs:
-    - targets: []
+    - targets: [alertmanager-1:9093]
+rule_files:
+  - "./rules/*.yml"
+###
+### </Alerting And Ruling Stuff>
+###
+    
 scrape_configs:
 - job_name: prometheus
   honor_timestamps: true
