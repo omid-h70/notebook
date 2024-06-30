@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  lua:
+    container_name: redis-lua
+    restart: unless-stopped
+    build:
+        context: . 
+    volumes:
+      - ./src:/src
+    # t
+    tty: true
+    # i
+    stdin_open: true 
