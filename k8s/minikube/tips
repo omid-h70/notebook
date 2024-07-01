@@ -1,3 +1,4 @@
 # Before Starting Minikube run these commands and always use latest version
 minikube delete --all --purge
 minikube start --cpus 4 --memory 8192
+minikube start --cpus 4 --memory 8192 --nodes 3
