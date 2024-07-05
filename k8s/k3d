@@ -1,0 +1,3 @@
+#Create a New Cluster with 5 workers and 3 masters
+k3d cluster create --servers 3 --agents 5 -p "80:80@loadbalancer" -p "443:443@loadbalancer" --api-port localhost:6550
+#set api-port if you have any connection issues with kubectl on windows
