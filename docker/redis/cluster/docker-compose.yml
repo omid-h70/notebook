@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  control-plane:
+    container_name: control-plane
+    build:
+      context: .
+      dockerfile: Dockerfile-master
+    ports:
+      - 6379:6379
+    tty: true    
+    depends_on:
+      - redis1
+      - redis2
+      - redis3
+      - redis4
+      - redis5
+      - redis6
+    restart: on-failure
+  redis0:
+    container_name: redis0
+    image: redis:7.2.5-alpine
+    ports:
+      - 6378:6379
+    restart: on-failure
+
+  redis1:
+    container_name: redis1
+    build:
+      context: .
+    volumes:
+      - ./conf:/cluster.conf
+  redis2:
+    container_name: redis2
+    build:
+      context: .
+    volumes:
+      - ./conf:/cluster.conf
+  redis3:
+    container_name: redis3
+    build:
+      context: .
+    volumes:
+      - ./conf:/cluster.conf
+  redis4:
+    container_name: redis4
+    build:
+      context: .
+    volumes:
+      - ./conf:/cluster.conf
+  redis5:
+    container_name: redis5
+    build:
+      context: .
+    volumes:
+      - ./conf:/cluster.conf
+  redis6:
+    container_name: redis6
+    build:
+      context: .
+    volumes:
+      - ./conf:/cluster.conf
