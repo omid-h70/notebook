@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+    postgres:
+        container_name: postgres_db
+        image: postgres:16.2-alpine
+        environment:
+            POSTGRES_PASSWORD: secret
+            PGDATA: /data/postgres
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./data:/data/postgres
+        ports:
+            - "5432:5432"
+        networks:
+            - postgres
+        restart: unless-stopped
+
+networks:
+    postgres:
+        driver: bridge
