@@ -1,10 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
-    postgres:
-        container_name: postgres_db
-        image: postgres:16.2-alpine
+    db:
+        container_name: postgres-17-alpine
+        image: postgres:17.0-alpine
+        restart: unless-stopped
         environment:
+            POSTGRES_DB: test-db
+            POSTGRES_USER: root
             POSTGRES_PASSWORD: secret
             PGDATA: /data/postgres
             POSTGRES_HOST_AUTH_METHOD: trust
@@ -14,8 +17,25 @@ services:
             - "5432:5432"
         networks:
             - postgres
-        restart: unless-stopped
-
+    pg-admin:
+        container_name: pg-admin
+        restart: always
+        image: dpage/pgadmin4:9.10.0
+        ports:
+          - "8888:80"
+        environment:
+          PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+          PGADMIN_DEFAULT_PASSWORD: secret
+        volumes:
+          - pgadmin-data:/var/lib/pgadmin
+        depends_on:
+          - db
+        networks:
+          - postgres
 networks:
     postgres:
         driver: bridge
+
+volumes:
+  local-pgdata:
+  pgadmin-data:
