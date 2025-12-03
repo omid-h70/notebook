@@ -1,0 +1,12 @@
+/* sample path of file c:\Users\Hosseini\AppData\Roaming\Code\User\settings.json */
+
+{
+    "security.workspace.trust.untrustedFiles": "open",
+    "makefile.configureOnOpen": false,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "go.delveConfig": {
+         "dlvToolPath": "C:\\Users\\ohosseini\\go\\bin"
+    },
+    // to disable go test cache in vs code and enable verbose mode
+    "go.testFlags": ["-count=1", "-v"]
+}
