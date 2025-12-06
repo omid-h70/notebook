@@ -1,21 +1,57 @@
-# Use root/example as user/password credentials
-version: '3.8'
+version: "3.9"
 
 services:
-
-  mongo:
-    image: mongo
-    restart: always
+  mongodb:
+    image: mongo:8.0.14-noble
+    container_name: mongodb-noble
+    restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: secret
-
-  mongo-express:
-    image: mongo-express
-    restart: always
+      MONGO_INITDB_DATABASE: test-db
     ports:
-      - 8081:8081
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mongo-network
+
+#    command: ["mongod", "--bind_ip_all"]
+#    healthcheck:
+#      test:
+#        - CMD
+#        - mongosh
+#        - 'mongodb://localhost:27017/admin'
+#        - '--eval=db.runCommand({ping:1})'
+#      retries: 3
+#      timeout: 5s
+  
+  mongo-express:
+    image: mongo-express:1.0.2-18
+    container_name: mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    networks:
+      - mongo-network
+
     environment:
+      #These environment variables tell mongo-express how to log into MongoDB.
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_DOCUMENTS_PER_PAGE: 1000
+      
+      ME_CONFIG_SITE_BASEURL: /
+      ME_CONFIG_MONGODB_URL: mongodb://root:secret@mongodb:27017/?authSource=admin"
+      
+      ME_CONFIG_BASICAUTH_USERNAME: root
+      ME_CONFIG_BASICAUTH_PASSWORD: secret
+    ports:
+      - "8082:8081"
+
+networks:
+  mongo-network:
+
+volumes:
+  mongo-data:
