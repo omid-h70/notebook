@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      # default user is "sa"
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      # optionally mount a volume for data persistence
+      - mssql-data:/var/opt/mssql
+    restart: unless-stopped
+
+    networks:
+      - mssql-network
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: unless-stopped
+    
+    depends_on:
+      - mssql
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - mssql-network
+
+volumes:
+  mssql-data:
+
+networks:
+  mssql-network:
