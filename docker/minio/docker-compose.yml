@@ -1,0 +1,40 @@
+# Use a recent Docker Compose file format.
+version: "3.8"
+
+services:
+  nginx-proxy:
+    container_name: nginx-proxy
+    restart: unless-stopped
+    image: nginx:1-alpine
+    ports:
+      - 8085:80
+    volumes:
+      - ./www/:/var/www/html
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+        - minio
+  minio:
+    # Use the official MinIO image from Docker Hub.
+    image: minio/minio:RELEASE.2025-07-23T15-54-02Z
+    container_name: minio
+    restart: unless-stopped
+    # Map ports from your host to the container.
+    # 9000 is for the MinIO API and browser console.
+    # 9001 is for the MinIO Console.
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+      
+    # Set the root user and password. CHANGE THESE TO SECURE VALUES.
+    environment:
+      MINIO_ROOT_USER: "minio-admin"
+      MINIO_ROOT_PASSWORD: "minio-password"
+      
+    # Use a named volume to ensure data persists across restarts.
+    volumes:
+      - ./data:/data
+    
+    # The command to start the MinIO server.
+    command: server /data --console-address ":9001"
+    
